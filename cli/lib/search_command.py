@@ -6,8 +6,6 @@ from nltk.stem import PorterStemmer
 
 from .utils import DEFAULT_SEARCH_LIMIT, load_movies, load_stopwords
 
-stemmer = PorterStemmer()
-
 
 def search_command(
     query: str, limit: int = DEFAULT_SEARCH_LIMIT
@@ -35,6 +33,7 @@ def tokenize_text(text: str) -> list[str]:
     stopwords = _stopword_set()
     tokens = remove_stopwords(text.split(), stopwords)
     valid_tokens = []
+    stemmer = PorterStemmer()
     for token in tokens:
         if token:
             valid_tokens.append(stemmer.stem(token))
