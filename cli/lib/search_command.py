@@ -77,19 +77,11 @@ def search_command(
 ) -> list[dict[str, Any]]:
     movies = load_movies()
     matched = []
-    query_tokens = preprocess(query)
+    query_tokens = set(preprocess(query))
     for movie in movies:
         title_tokens = preprocess(movie.get("title", ""))
-        if has_matching_query(query_tokens, title_tokens):
+        if not query_tokens.isdisjoint(title_tokens):
             matched.append(movie)
         if len(matched) >= limit:
             break
     return matched
-
-
-def has_matching_query(query_tokens: list[str], title_tokens: list[str]) -> bool:
-    for query_token in query_tokens:
-        for title_token in title_tokens:
-            if query_token in title_token:
-                return True
-    return False
